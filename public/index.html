@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulsera PPG - Dashboard</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f4f6f8; color: #1a1a1a; }
+    header { background: #b71c1c; color: #fff; padding: 16px 24px; }
+    header h1 { margin: 0; font-size: 20px; }
+    main { padding: 24px; max-width: 1100px; margin: 0 auto; }
+    .bar { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+    input { padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
+    button { padding: 8px 14px; border: 0; border-radius: 6px; background: #b71c1c; color: #fff; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid #eee; font-size: 13px; text-align: left; }
+    th { background: #fafafa; }
+    .note { color: #666; font-size: 13px; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <header><h1>Pulsera PPG — Panel de sesiones (placeholder)</h1></header>
+  <main>
+    <p class="note">Dashboard base. La versión final la desarrollas tú. Para cargar datos
+      necesitas la API Key (header <code>X-API-Key</code>).</p>
+    <div class="bar">
+      <input id="apikey" type="password" placeholder="X-API-Key" size="40" />
+      <button onclick="cargar()">Cargar sesiones</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Paciente</th><th>BPM</th><th>Hora disp.</th><th>Fuente</th>
+            <th>Ansiedad</th><th>Fecha</th></tr>
+      </thead>
+      <tbody id="filas"><tr><td colspan="7" class="note">Sin datos cargados.</td></tr></tbody>
+    </table>
+  </main>
+  <script>
+    async function cargar() {
+      const key = document.getElementById('apikey').value;
+      const tbody = document.getElementById('filas');
+      tbody.innerHTML = '<tr><td colspan="7" class="note">Cargando...</td></tr>';
+      try {
+        const r = await fetch('/api/sesiones?limit=100', { headers: { 'X-API-Key': key } });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const data = await r.json();
+        if (!data.sesiones.length) { tbody.innerHTML = '<tr><td colspan="7" class="note">Sin registros.</td></tr>'; return; }
+        tbody.innerHTML = data.sesiones.map(s => `
+          <tr>
+            <td>${s.id}</td><td>${s.paciente ?? ''}</td><td>${s.bpm_valor ?? ''}</td>
+            <td>${s.hora_dispositivo ?? ''}</td><td>${s.fuente_dato ?? ''}</td>
+            <td>${s.estado_ansiedad_etiqueta ?? ''}</td>
+            <td>${new Date(s.fecha).toLocaleString()}</td>
+          </tr>`).join('');
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="7" class="note">Error: ' + e.message + '</td></tr>';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+services:
+  pulsera_api:
+    build: .
+    container_name: pulsera_api
+    restart: always
+    ports:
+      - "9000:3000"          # host 9000 (libre segun GUIA_VPS) -> contenedor 3000
+    environment:
+      - PORT=3000
+      - DATABASE_URL=${DATABASE_URL}
+      - API_KEY=${API_KEY}
+    networks:
+      - default
+      - postgresql_default    # para alcanzar postgres_db por DNS interno
+
+networks:
+  postgresql_default:
+    external: true

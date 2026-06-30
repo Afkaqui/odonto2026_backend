@@ -1,0 +1,17 @@
+{
+  "name": "backend-pulsera",
+  "version": "2.0.0",
+  "description": "API REST (Node.js + Express) para el estudio de ansiedad con pulsera PPG. Modelo relacional doctor/patient/bracelet/consultation/record en PostgreSQL. Incluye dashboard web estatico.",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
+}
