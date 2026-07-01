@@ -74,6 +74,16 @@ CREATE TABLE IF NOT EXISTS record (
 -- Nombre/identificador opcional del paciente (modo "detallado": reutilizable y buscable).
 ALTER TABLE patient ADD COLUMN IF NOT EXISTS name TEXT;
 
+-- Momento del registro: contador (numero de momento en la consulta) + etiqueta
+-- editable (tamizaje, limpieza, anestesia, etc.). Reemplaza al enum fijo m1..m6
+-- (la columna 'phase' queda nullable y en desuso; se conserva por compatibilidad).
+ALTER TABLE record ADD COLUMN IF NOT EXISTS phase_num   INTEGER;
+ALTER TABLE record ADD COLUMN IF NOT EXISTS phase_label TEXT;
+
+-- Etiquetas de ansiedad (status a1..a5, a1=menor ... a5=mayor). Referencia para
+-- interpretacion; el orden ordinal se mantiene para analisis.
+--   a1=Muy baja  a2=Baja  a3=Media  a4=Alta  a5=Muy alta
+
 -- Soporte de sincronizacion offline: id generado en el celular para deduplicar
 -- (si la app reintenta subir la misma sesion, no se duplica).
 ALTER TABLE consultation ADD COLUMN IF NOT EXISTS client_uuid TEXT;

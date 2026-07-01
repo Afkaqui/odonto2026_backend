@@ -81,11 +81,11 @@ router.post('/consultation', requireApiKey, async (req, res) => {
     for (const r of recs) {
       await client.query(
         `INSERT INTO record
-           (consultation_id, captured_at, device_time, ppg, bpm_raw, source, phase, status)
-         VALUES ($1, COALESCE($2, now()), $3, $4, $5, $6, $7, $8)`,
+           (consultation_id, captured_at, device_time, ppg, bpm_raw, source, phase_num, phase_label, status)
+         VALUES ($1, COALESCE($2, now()), $3, $4, $5, $6, $7, $8, $9)`,
         [consultationId, r.captured_at ?? null, r.device_time ?? null,
          toFloatOrNull(r.ppg), r.bpm_raw ?? null, r.source ?? null,
-         r.phase ?? null, r.status ?? null]
+         toIntOrNull(r.phase_num), r.phase_label ?? null, r.status ?? null]
       );
     }
 

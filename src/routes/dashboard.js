@@ -21,7 +21,7 @@ router.get('/summary', requireApiKey, async (_req, res) => {
     `);
 
     const ultimos = await pool.query(`
-      SELECT r.id, r.captured_at, r.ppg, r.phase, r.status, r.source,
+      SELECT r.id, r.captured_at, r.ppg, r.phase_num, r.phase_label, r.status, r.source,
              r.consultation_id, p.code AS paciente_code, p.name AS paciente_name,
              d.name AS doctor_name, d.lastname AS doctor_lastname
       FROM record r
