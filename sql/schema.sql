@@ -1,5 +1,5 @@
 -- =====================================================================
---  Esquema BD pulsera_db  (Pulsera PPG - deteccion de ansiedad en consulta)
+--  Esquema BD odonto2026_db  (Pulsera PPG - deteccion de ansiedad en consulta)
 --  Modelo relacional: doctor / patient / bracelet / consultation / record
 --  Objetivo: medir duracion de la atencion y registrar, en momentos clave,
 --  el estado del paciente (cada vez que el odontologo presiona "Guardar").

@@ -10,7 +10,7 @@ dashboard web base (`public/`) para que lo termines tú.
 App Flutter ──HTTPS POST──► nginx_proxy ──► pulsera_api (Docker :9000)
                                                  │ red postgresql_default
                                                  ▼
-                                            postgres_db → BD "pulsera_db"
+                                            postgres_db → BD "odonto2026_db"
 ```
 
 - El puerto 5432 del VPS **solo escucha en 127.0.0.1**: la app NUNCA conecta
@@ -69,7 +69,7 @@ Flujo: `login doctor` → `crea/elige patient + bracelet` → `POST consultation
 
 ## Variables de entorno (`.env`, nunca a git)
 Ver `.env.example`. Claves:
-- `DATABASE_URL=postgresql://admin:K4qu1_Pr0d_2026@postgres_db:5432/pulsera_db`
+- `DATABASE_URL=postgresql://admin:K4qu1_Pr0d_2026@postgres_db:5432/odonto2026_db`
 - `API_KEY=<openssl rand -hex 24>`  (la app la envía en `X-API-Key`)
 
 ## Despliegue en el VPS (resumen)
@@ -81,7 +81,7 @@ mkdir -p ~/pulsera_backend            # copiar aquí el contenido
 cp .env.example .env && nano .env     # poner API_KEY real
 
 # 2) Crear la base de datos (si no existe)
-docker exec postgres_db psql -U admin -d main_db -c "CREATE DATABASE pulsera_db;"
+docker exec postgres_db psql -U admin -d main_db -c "CREATE DATABASE odonto2026_db;"
 
 # 3) Levantar el contenedor
 cd ~/pulsera_backend
