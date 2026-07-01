@@ -46,8 +46,8 @@ router.post('/consultation', requireApiKey, async (req, res) => {
         patientId = p.rows[0].id;
       } else {
         const np = await client.query(
-          'INSERT INTO patient (code, age, gender) VALUES ($1,$2,$3) RETURNING id',
-          [b.patient.code, toIntOrNull(b.patient.age), b.patient.gender ?? null]
+          'INSERT INTO patient (code, age, gender, name) VALUES ($1,$2,$3,$4) RETURNING id',
+          [b.patient.code, toIntOrNull(b.patient.age), b.patient.gender ?? null, b.patient.name ?? null]
         );
         patientId = np.rows[0].id;
       }

@@ -22,7 +22,7 @@ router.get('/summary', requireApiKey, async (_req, res) => {
 
     const ultimos = await pool.query(`
       SELECT r.id, r.captured_at, r.ppg, r.phase, r.status, r.source,
-             r.consultation_id, p.code AS paciente_code,
+             r.consultation_id, p.code AS paciente_code, p.name AS paciente_name,
              d.name AS doctor_name, d.lastname AS doctor_lastname
       FROM record r
       JOIN consultation c ON c.id = r.consultation_id
@@ -49,7 +49,7 @@ router.get('/session', requireApiKey, async (req, res) => {
   const date = req.query.date || null; // null = hoy
   try {
     const r = await pool.query(`
-      SELECT cs.*, p.code AS paciente_code, p.age AS paciente_edad,
+      SELECT cs.*, p.code AS paciente_code, p.name AS paciente_name, p.age AS paciente_edad,
              d.name AS doctor_name, d.lastname AS doctor_lastname,
              b.code AS pulsera_code
       FROM consultation_summary cs

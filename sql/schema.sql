@@ -71,6 +71,9 @@ CREATE TABLE IF NOT EXISTS record (
   created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- Nombre/identificador opcional del paciente (modo "detallado": reutilizable y buscable).
+ALTER TABLE patient ADD COLUMN IF NOT EXISTS name TEXT;
+
 -- Soporte de sincronizacion offline: id generado en el celular para deduplicar
 -- (si la app reintenta subir la misma sesion, no se duplica).
 ALTER TABLE consultation ADD COLUMN IF NOT EXISTS client_uuid TEXT;
