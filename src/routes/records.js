@@ -38,6 +38,18 @@ router.post('/', requireApiKey, async (req, res) => {
   }
 });
 
+// DELETE /api/records/:id -> elimina un record (para el dashboard)
+router.delete('/:id', requireApiKey, async (req, res) => {
+  try {
+    const r = await pool.query('DELETE FROM record WHERE id = $1 RETURNING id', [req.params.id]);
+    if (!r.rowCount) return res.status(404).json({ error: 'Record no encontrado' });
+    res.json({ ok: true, deleted: r.rows[0].id });
+  } catch (err) {
+    console.error('Error borrar record:', err.message);
+    res.status(500).json({ error: 'No se pudo borrar el record' });
+  }
+});
+
 // GET /api/records?consultation_id=NN
 router.get('/', requireApiKey, async (req, res) => {
   const cid = req.query.consultation_id;
